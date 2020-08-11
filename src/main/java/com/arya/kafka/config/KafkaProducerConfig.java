@@ -51,7 +51,7 @@ public class KafkaProducerConfig {
 
 
 //    private void testCallback(ProducerFactory<String, String> props) {
-//        Producer<String, String> producer = new KafkaProducer<>((Map<String, Object>) props);
+//        ProducerService<String, String> producer = new KafkaProducer<>((Map<String, Object>) props);
 //        TestCallback callback = new TestCallback();
 //
 //        for (long i = 0; i < 100; i++) {
