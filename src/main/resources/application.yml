@@ -1,5 +1,7 @@
 server:
   port: 8080  # Tomcat default port
+
+
 spring:
   kafka:
     consumer:
@@ -14,3 +16,4 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
     topic: test_topic
+    superhero-topic: superhero_topic

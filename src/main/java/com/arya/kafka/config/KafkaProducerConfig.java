@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,19 +16,19 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${boostrap.server: localhost:9092}")
-    private String bootstrapServer;
+    @Value("${spring.kafka.consumer.bootstrap-servers: localhost:9092}")
+    private String bootstrapServers;
 
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public <R, T> ProducerFactory<R, T> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.ACKS_CONFIG, "all");
         configProps.put(ProducerConfig.RETRIES_CONFIG, 3);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         //configure the following three settings for SSL Encryption
         //configProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
@@ -44,8 +45,8 @@ public class KafkaProducerConfig {
 
 
     @Bean
-    public KafkaProducer<String, String> kafkaProducer() {
-        return new KafkaProducer<>((Map<String, Object>) producerFactory());
+    public <R, T> KafkaTemplate<R, T> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 
 
