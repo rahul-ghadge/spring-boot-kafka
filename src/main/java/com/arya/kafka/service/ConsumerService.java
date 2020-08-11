@@ -13,13 +13,13 @@ public class ConsumerService {
 
     @KafkaListener(topics = { "${spring.kafka.topic}" }, groupId = "group_id")
     public void consumeMessage(String message) {
-        logger.info(String.format("#### -> Consumed message -> %s", message));
+        logger.info("#### -> Consumed message -> {}", message);
     }
 
 
     @KafkaListener(topics = { "${spring.kafka.superhero-topic}" }, groupId = "group_id")
     public void consumeSuperHero(Object superHero) {
-        logger.info(String.format("#### -> Consumed Super Hero -> %s", superHero));
+        logger.info("Consumed Super Hero :: {}", superHero);
     }
 
 }

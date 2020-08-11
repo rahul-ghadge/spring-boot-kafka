@@ -26,13 +26,13 @@ public class ProducerService<T> {
 
 
     public void sendMessage(String message) {
-        logger.info(String.format("#### -> Producing message -> %s", message));
+        logger.info("#### -> Producing message -> {}", message);
         this.kafkaTemplate.send(topic, message);
     }
 
 
     public void sendSuperHeroMessage(T superHero) {
-        logger.info(String.format("#### -> SuperHero -> %s", superHero));
+        logger.info("#### -> SuperHero :: {}", superHero);
         kafkaTemplateSuperHero.send(superHeroTopic, superHero);
     }
 }
