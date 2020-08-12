@@ -121,7 +121,7 @@ If no error on the console means Apache Kafka is started and running now.
       ```
           
     **com.arya.kafka.config.KafkaConsumerConfig.java** (`@Configuration` annotation on class)
-    - **`@EnableKafka`**annotation is mandatory to consume the message in config class or main class
+    - `@EnableKafka` annotation is mandatory to consume the message in config class or main class
   
     - Json Consumer configuration
       ```
