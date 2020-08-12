@@ -13,6 +13,7 @@ and **consume** a message from Kafka Topic. Here message is in String and Json O
 - Eclipse or IntelliJ IDEA (or any preferred IDE) with embedded Gradle
 - Maven (version >= 3.6.0)
 - Postman (or any RESTful API testing tool)
+- Kafka
 
 <br/>
 
