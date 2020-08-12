@@ -230,4 +230,11 @@ If no error on the console means Apache Kafka is started and running now.
   ```
   
 ### Console Output
+```
+2020-08-12 16:10:30.737  INFO 7376 --- [nio-8080-exec-4] com.arya.kafka.service.ProducerService   : #### -> Publishing message -> test message
+2020-08-12 16:10:30.744  INFO 7376 --- [ntainer#1-0-C-1] com.arya.kafka.service.ConsumerService   : **** -> Consumed message -> test message
+2020-08-12 16:10:35.615  INFO 7376 --- [nio-8080-exec-5] com.arya.kafka.service.ProducerService   : #### -> Publishing SuperHero :: SuperHero [name=Tony, superName=Iron Man, profession=Business, age=50, canFly=true]
+2020-08-12 16:10:35.626  INFO 7376 --- [ntainer#0-0-C-1] com.arya.kafka.service.ConsumerService   : **** -> Consumed Super Hero :: SuperHero [name=Tony, superName=Iron Man, profession=Business, age=50, canFly=true]
+```
+
 ![Alt text](https://github.com/rahul-ghadge/spring-boot-kafka/blob/master/src/main/resources/Output.PNG?raw=true "Kafka Publisher-Consumer output")
