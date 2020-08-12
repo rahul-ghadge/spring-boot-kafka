@@ -31,34 +31,11 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.consumer.group-id: group_id}")
     private String groupId;
 
-//    @Bean
-//    public Map<String, Object> consumerFactory() {
-//        Map<String, Object> props = new HashMap<>();
-//
-//        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-//        //props.put(ConsumerConfig.CLIENT_ID_CONFIG, "");
-//        props.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
-//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-//        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1000);
-//        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
-//        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
-//        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
-//        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-//        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-//
-//        return props;
-//    }
-//
-//    @Bean
-//    public KafkaConsumer<String, Object> kafkaConsumer() {
-//        return new KafkaConsumer<>(consumerFactory());
-//    }
-
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Json Consumer
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    @Bean("consumerFactory")
+    @Bean
     public ConsumerFactory<String, SuperHero> consumerFactory() {
         JsonDeserializer<SuperHero> deserializer = new JsonDeserializer<>(SuperHero.class);
         deserializer.setRemoveTypeHeaders(false);
@@ -77,7 +54,7 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
     }
 
-    @Bean("kafkaListenerJsonFactory")
+    @Bean
     public <T> ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerJsonFactory() {
         ConcurrentKafkaListenerContainerFactory<String, SuperHero> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
@@ -87,8 +64,10 @@ public class KafkaConsumerConfig {
     }
 
 
-
-    @Bean("consumerFactoryString")
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // String Consumer
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Bean
     public ConsumerFactory<String, String> stringConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
 
@@ -102,7 +81,7 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new StringDeserializer());
     }
 
-    @Bean("kafkaListenerStringFactory")
+    @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerStringFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(stringConsumerFactory());

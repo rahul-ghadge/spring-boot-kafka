@@ -21,7 +21,10 @@ public class KafkaProducerConfig {
     private String bootstrapServers;
 
 
-    @Bean("producerFactory")
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Json Producer
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Bean
     public <T> ProducerFactory<String, T> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
@@ -46,13 +49,18 @@ public class KafkaProducerConfig {
 
 
     @Primary
-    @Bean("kafkaTemplate")
+    @Bean
     public <T> KafkaTemplate<String, T> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
 
-    @Bean("producerStringFactory")
+
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // String Producer
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Bean
     public ProducerFactory<String, String> producerStringFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
@@ -76,7 +84,7 @@ public class KafkaProducerConfig {
     }
 
 
-    @Bean("kafkaTemplateString")
+    @Bean
     public KafkaTemplate<String, String> kafkaStringTemplate() {
         return new KafkaTemplate<>(producerStringFactory());
     }
