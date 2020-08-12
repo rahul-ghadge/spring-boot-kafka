@@ -38,7 +38,7 @@ Step 3: Add c:\kafka_x.xx-x.x.x\bin path as environment variable.
 
 
 ##### Start ZooKeeper
-Go to the kafka location using terminal and hit below command like 
+Go to the zookeeper location using terminal and hit below command like 
 > `cd c:\apache-zookeeper-x.x.x`  
 > `zkserver`
 
@@ -57,7 +57,7 @@ If no error on the console means Apache Kafka is started and running now.
 
 
 ### Code Snippets
-1. ###### Maven Dependencies
+1. #### Maven Dependencies
      **pom.xml**  
     ```
     <dependency>
@@ -66,7 +66,7 @@ If no error on the console means Apache Kafka is started and running now.
     </dependency>
     ```
    
-2. ###### Properties file
+2. #### Properties file
      **src/main/resources/application.yml**
      ```
      spring:
@@ -80,7 +80,7 @@ If no error on the console means Apache Kafka is started and running now.
          superhero-topic: superhero-topic  
      ```
    
-3. ###### Model class
+3. #### Model class
      **com.arya.kafka.model.SuperHero.java**  
     ```
     public class SuperHero implements Serializable {
@@ -95,7 +95,7 @@ If no error on the console means Apache Kafka is started and running now.
     }
     ```
 
-4. ###### Kafka Configuration
+4. #### Kafka Configuration
     **com.arya.kafka.config.KafkaProducerConfig.java** (`@Configuration` annotation on class)
     - Json Producer configuration
       ```
@@ -173,7 +173,7 @@ If no error on the console means Apache Kafka is started and running now.
          return factory;
       }
       
-5. ###### Publishing data to Kafka Topic
+5. #### Publishing data to Kafka Topic
     **com.arya.kafka.service.ProducerService.java**  
     - Publishing Json Object
         ```
@@ -196,7 +196,7 @@ If no error on the console means Apache Kafka is started and running now.
         }
         ```
       
-6. ###### Consuming data from Kafka Topic
+6. #### Consuming data from Kafka Topic
     **com.arya.kafka.service.ConsumerService.java**  
     ```
     // String Consumer
