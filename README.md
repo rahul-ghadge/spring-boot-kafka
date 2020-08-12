@@ -1,5 +1,5 @@
 # spring-boot-kafka
-Spring boot kafka with Super Hero - This project explains How to **publish** message in kafka Topic 
+Spring boot kafka Producer & Consumer with String and Json object - This project explains How to **publish** message in kafka Topic 
 and **consume** a message from Kafka Topic. Here message is in String and Json Object format.
 
 
