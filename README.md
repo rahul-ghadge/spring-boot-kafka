@@ -64,10 +64,39 @@ If no error on the console means Apache Kafka is started and running now.
         <artifactId>spring-kafka</artifactId>
     </dependency>
     ```
+   
+2. ###### Properties file
+     **src/main/resources/application.yml**
+     ```
+     spring:
+       kafka:
+         consumer:
+           bootstrap-servers: localhost:9092
+           group-id: group_id
+         producer:
+           bootstrap-servers: localhost:9092
+         topic: message-topic
+         superhero-topic: superhero-topic  
+     ```
+   
+3. ###### Model class
+     **com.arya.kafka.model.SuperHero.java**  
+    ```
+    public class SuperHero implements Serializable {
+    
+        private String name;
+        private String superName;
+        private String profession;
+        private int age;
+        private boolean canFly;
+   
+        // Constructor, Getter and Setter
+    }
+    ```
 
-2. ###### Kafka Configuration
-    **com.arya.kafka.config.KafkaProducerConfig.java**
-    - Json Producer
+4. ###### Kafka Configuration
+    **com.arya.kafka.config.KafkaProducerConfig.java** (`@Configuration` annotation on class)
+    - Json Producer configuration
       ```
       configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
       configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
@@ -79,7 +108,7 @@ If no error on the console means Apache Kafka is started and running now.
       }  
       ``` 
       
-    - String Producer
+    - String Producer configuration
       ```
       configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
       configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -91,10 +120,10 @@ If no error on the console means Apache Kafka is started and running now.
       }
       ```
           
-    **com.arya.kafka.config.KafkaConsumerConfig.java**
+    **com.arya.kafka.config.KafkaConsumerConfig.java** (`@Configuration` annotation on class)
     - **`@EnableKafka`**annotation is mandatory to consume the message in config class or main class
   
-    - Json Consumer
+    - Json Consumer configuration
       ```
       @Bean
       public ConsumerFactory<String, SuperHero> consumerFactory() {
@@ -119,7 +148,7 @@ If no error on the console means Apache Kafka is started and running now.
          return factory;
       }     
    
-    - String Consumer
+    - String Consumer configuration
       ``` 
       @Bean
       public ConsumerFactory<String, String> stringConsumerFactory() {
@@ -142,5 +171,62 @@ If no error on the console means Apache Kafka is started and running now.
          factory.setBatchListener(true);
          return factory;
       }
-
       
+5. ###### Publishing data to Kafka Topic
+    **com.arya.kafka.service.ProducerService.java**  
+    - Publishing Json Object
+        ```
+        @Autowired
+        private KafkaTemplate<String, T> kafkaTemplateSuperHero;
+       
+        public void sendSuperHeroMessage(T superHero) {
+            logger.info("#### -> Publishing SuperHero :: {}", superHero);
+            kafkaTemplateSuperHero.send(superHeroTopic, superHero);
+        }
+        ```
+    - Publishing String message
+        ```
+        @Autowired
+        private KafkaTemplate<String, String> kafkaTemplate;
+        
+        public void sendMessage(String message) {
+            logger.info("#### -> Publishing message -> {}", message);
+            kafkaTemplate.send(topic, message);
+        }
+        ```
+      
+6. ###### Consuming data from Kafka Topic
+    **com.arya.kafka.service.ConsumerService.java**  
+    ```
+    // String Consumer
+    @KafkaListener(topics = {"${spring.kafka.topic}"}, containerFactory = "kafkaListenerStringFactory", groupId = "group_id")
+    public void consumeMessage(String message) {
+        logger.info("**** -> Consumed message -> {}", message);
+    }        
+    
+    // Object Consumer   
+    @KafkaListener(topics = {"${spring.kafka.superhero-topic}"}, containerFactory = "kafkaListenerJsonFactory", groupId = "group_id")
+    public void consumeSuperHero(SuperHero superHero) {
+        logger.info("**** -> Consumed Super Hero :: {}", superHero);
+    }
+    ```
+   
+### API Endpoints
+
+> **GET Mapping** http://localhost:8080/kafka/publish?message=test message 
+   
+> **POST Mapping** http://localhost:8080/kafka/publish  
+                                                    
+  Request Body  
+  ```
+    {
+        "name": "Tony",
+        "superName": "Iron Man",
+        "profession": "Business",
+        "age": 50,
+        "canFly": true
+    }
+  ```
+  
+### Console Output
+![Alt text](https://github.com/rahul-ghadge/spring-boot-kafka/blob/master/src/main/resources/Output.PNG?raw=true "Kafka Publisher-Consumer output")
