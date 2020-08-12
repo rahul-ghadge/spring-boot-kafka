@@ -55,11 +55,92 @@ Go to the kafka location using terminal and hit below command like
 If no error on the console means Apache Kafka is started and running now.
 
 
-### Maven Dependencies
-**pom.xml**  
-```
-<dependency>
-    <groupId>org.springframework.kafka</groupId>
-	<artifactId>spring-kafka</artifactId>
-</dependency>
-```
+### Code Snippets
+1. ###### Maven Dependencies
+     **pom.xml**  
+    ```
+    <dependency>
+        <groupId>org.springframework.kafka</groupId>
+        <artifactId>spring-kafka</artifactId>
+    </dependency>
+    ```
+
+2. ###### Kafka Configuration
+    **com.arya.kafka.config.KafkaProducerConfig.java**
+    - Json Producer
+      ```
+      configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+      configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+      ```
+      ```
+      @Bean
+      public <T> KafkaTemplate<String, T> kafkaTemplate() {
+          return new KafkaTemplate<>(producerFactory());
+      }  
+      ``` 
+      
+    - String Producer
+      ```
+      configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+      configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+      ```
+      ```
+      @Bean
+      public KafkaTemplate<String, String> kafkaStringTemplate() {
+          return new KafkaTemplate<>(producerStringFactory());
+      }
+      ```
+          
+    **com.arya.kafka.config.KafkaConsumerConfig.java**
+    - **`@EnableKafka`**annotation is mandatory to consume the message in config class or main class
+  
+    - Json Consumer
+      ```
+      @Bean
+      public ConsumerFactory<String, SuperHero> consumerFactory() {
+         Map<String, Object> config = new HashMap<>();
+     
+         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+     
+         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new JsonDeserializer<>(SuperHero.class));
+      }
+      
+      @Bean
+      public <T> ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerJsonFactory() {
+         ConcurrentKafkaListenerContainerFactory<String, SuperHero> factory = new ConcurrentKafkaListenerContainerFactory<>();
+         factory.setConsumerFactory(consumerFactory());
+         factory.setMessageConverter(new StringJsonMessageConverter());
+         factory.setBatchListener(true);
+         return factory;
+      }     
+   
+    - String Consumer
+      ``` 
+      @Bean
+      public ConsumerFactory<String, String> stringConsumerFactory() {
+         Map<String, Object> config = new HashMap<>();
+   
+         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+   
+         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new StringDeserializer());
+      }
+   
+      @Bean
+      public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerStringFactory() {
+         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+         factory.setConsumerFactory(stringConsumerFactory());
+         factory.setBatchListener(true);
+         return factory;
+      }
+
+      
