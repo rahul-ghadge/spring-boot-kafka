@@ -1,10 +1,11 @@
 package com.arya.kafka.config;
 
-import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -16,12 +17,12 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${spring.kafka.consumer.bootstrap-servers: localhost:9092}")
+    @Value("${spring.kafka.producer.bootstrap-servers: localhost:9092}")
     private String bootstrapServers;
 
 
-    @Bean
-    public <R, T> ProducerFactory<R, T> producerFactory() {
+    @Bean("producerFactory")
+    public <T> ProducerFactory<String, T> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -30,12 +31,12 @@ public class KafkaProducerConfig {
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
-        //configure the following three settings for SSL Encryption
+        // **___ configure the following three settings for SSL Encryption ___**
         //configProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
         //configProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/var/private/ssl/kafka.client.truststore.jks");
         //configProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "test1234");
 
-        // configure the following three settings for SSL Authentication
+        // **___configure the following three settings for SSL Authentication ___**
         //configProps.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/var/private/ssl/kafka.client.keystore.jks");
         //configProps.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "test1234");
         //configProps.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, "test1234");
@@ -44,35 +45,40 @@ public class KafkaProducerConfig {
     }
 
 
-    @Bean
-    public <R, T> KafkaTemplate<R, T> kafkaTemplate() {
+    @Primary
+    @Bean("kafkaTemplate")
+    public <T> KafkaTemplate<String, T> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
 
-//    private void testCallback(ProducerFactory<String, String> props) {
-//        ProducerService<String, String> producer = new KafkaProducer<>((Map<String, Object>) props);
-//        TestCallback callback = new TestCallback();
-//
-//        for (long i = 0; i < 100; i++) {
-//            ProducerRecord<String, String> data = new ProducerRecord<>("test-topic", "key-" + i, "message-" + i);
-//            producer.send(data, callback);
-//        }
-//        producer.close();
-//    }
-//
-//    private static class TestCallback implements Callback {
-//        @Override
-//        public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-//            if (e != null) {
-//                System.out.println("Error while producing message to topic :"
-//                        + recordMetadata);
-//                e.printStackTrace();
-//            } else {
-//                String message = String.format("sent message to topic:%s partition:%s offset:%s ", recordMetadata.topic(),
-//                        recordMetadata.partition(), recordMetadata.offset());
-//                System.out.println(message);
-//            }
-//        }
-//    }
+    @Bean("producerStringFactory")
+    public ProducerFactory<String, String> producerStringFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        configProps.put(ProducerConfig.ACKS_CONFIG, "all");
+        configProps.put(ProducerConfig.RETRIES_CONFIG, 3);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+
+        // **___ configure the following three settings for SSL Encryption ___**
+        //configProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
+        //configProps.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/var/private/ssl/kafka.client.truststore.jks");
+        //configProps.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "test1234");
+
+        // **___configure the following three settings for SSL Authentication ___**
+        //configProps.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/var/private/ssl/kafka.client.keystore.jks");
+        //configProps.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "test1234");
+        //configProps.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, "test1234");
+
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+
+    @Bean("kafkaTemplateString")
+    public KafkaTemplate<String, String> kafkaStringTemplate() {
+        return new KafkaTemplate<>(producerStringFactory());
+    }
+
 }
