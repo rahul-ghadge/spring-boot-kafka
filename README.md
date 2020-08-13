@@ -109,7 +109,10 @@ If no error on the console means Apache Kafka is started and running now.
     ```
 
 4. #### Kafka Configuration
-    **com.arya.kafka.config.KafkaProducerConfig.java** (`@Configuration` annotation on class)
+    The kafka producer related configuration is under **com.arya.kafka.config.KafkaProducerConfig.java** class.  
+    This class is marked with `@Configuration` annotation. For JSON producer we have to set value serializer property to `JsonSerializer.class`
+    and have to pass that factory to KafkaTemplate.  
+    For String producer we have to set value serializer property to `StringSerializer.class` and have to pass that factory to new KafkaTemplate. 
     - Json Producer configuration
       ```
       configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -134,9 +137,10 @@ If no error on the console means Apache Kafka is started and running now.
       }
       ```
           
-    **com.arya.kafka.config.KafkaConsumerConfig.java** (`@Configuration` annotation on class)
-    - `@EnableKafka` annotation is mandatory to consume the message in config class or main class
-  
+    The kafka consumer related configuration is under **com.arya.kafka.config.KafkaConsumerConfig.java** class.  
+    This class is marked with `@Configuration` and `@EnableKafka` (mandatory to consume the message in config class or main class) annotation. 
+    For JSON consumer we have to set value deserializer property to `JsonDeserializer.class` and have to pass that factory to ConsumerFactory.  
+    For String consumer we have to set value deserializer property to `StringDeserializer.class` and have to pass that factory to new ConsumerFactory.
     - Json Consumer configuration
       ```
       @Bean
@@ -187,7 +191,8 @@ If no error on the console means Apache Kafka is started and running now.
       }
       
 5. #### Publishing data to Kafka Topic
-    **com.arya.kafka.service.ProducerService.java**  
+    In **com.arya.kafka.service.ProducerService.java** class both String and JSON `KafkaTemplate`s are autowired 
+    and using send() method we can publish data to kafka topics.  
     - Publishing Json Object
         ```
         @Autowired
@@ -210,7 +215,8 @@ If no error on the console means Apache Kafka is started and running now.
         ```
       
 6. #### Consuming data from Kafka Topic
-    **com.arya.kafka.service.ConsumerService.java**  
+    In **com.arya.kafka.service.ConsumerService.java** class, we are consuming data from topics using `@KafkaListener` annotation.
+    We are binding consumer factory from **KafkaConsumerConfig.java** class to **containerFactory** in KafkaListener.  
     ```
     // String Consumer
     @KafkaListener(topics = {"${spring.kafka.topic}"}, containerFactory = "kafkaListenerStringFactory", groupId = "group_id")
