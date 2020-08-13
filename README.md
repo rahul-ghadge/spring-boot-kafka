@@ -44,10 +44,11 @@ Step 3: Add c:\kafka_x.xx-x.x.x\bin path as environment variable.
 ##### Start ZooKeeper
 Go to the zookeeper location using terminal and hit below command like 
 > `cd c:\apache-zookeeper-x.x.x`  
+
 > `zkserver`
 
-or
-> `.\bin\zookeeper-server-start.sh .\config\zookeeper.properties`
+<!-- or -->
+<!-- > `.\bin\zookeeper-server-start.sh .\config\zookeeper.properties` -->
 
 If no error on the console means Zookeeper is started and running.
 
