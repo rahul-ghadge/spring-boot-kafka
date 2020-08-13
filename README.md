@@ -1,5 +1,6 @@
 # spring-boot-kafka
-Spring boot kafka Producer & Consumer with String and Json object - This project explains How to **publish** message in kafka Topic 
+Spring boot kafka application with multiple Producers and multiple Consumers for String data and JSON object - 
+This project explains How to **publish** message in kafka Topic 
 and **consume** a message from Kafka Topic. Here message is in String and Json Object format.  
 In this application there are two publishers, i.e. one for String data and another one is for publishing object. 
 For those two publishers, two `KafkaTemplate`s are used.  
