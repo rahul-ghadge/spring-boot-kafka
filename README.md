@@ -55,7 +55,7 @@ If no error on the console means Zookeeper is started and running.
 Go to the kafka location using terminal and hit below command like 
 > `cd c:\kafka_x.xx-x.x.x`
 
-> `.\bin\kafka-server-start.sh .\config\server.properties`
+> `.\bin\windows\kafka-server-start.bat .\config\server.properties`
 
 If no error on the console means Apache Kafka is started and running now.
 
