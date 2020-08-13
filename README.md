@@ -1,19 +1,22 @@
 # spring-boot-kafka
 Spring boot kafka Producer & Consumer with String and Json object - This project explains How to **publish** message in kafka Topic 
-and **consume** a message from Kafka Topic. Here message is in String and Json Object format.
-
+and **consume** a message from Kafka Topic. Here message is in String and Json Object format.  
+In this application there are two publishers, i.e. one for String data and another one is for publishing object. 
+For those two publishers, two `KafkaTemplate`s are used.  
+To consume those messages and objects two consumers are used. Two `@KafkaListner`s are used to consume respective data.
 
 ## Prerequisites 
 - Java
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Maven](https://maven.apache.org/guides/index.html)
+- [Zookeeper](https://zookeeper.apache.org/)
 - [Kafka](https://kafka.apache.org/documentation/)
 
 ## Tools
 - Eclipse or IntelliJ IDEA (or any preferred IDE) with embedded Gradle
 - Maven (version >= 3.6.0)
 - Postman (or any RESTful API testing tool)
-- Kafka
+- Kafka (any commandline tool)
 
 <br/>
 
@@ -58,7 +61,7 @@ If no error on the console means Apache Kafka is started and running now.
 
 ### Code Snippets
 1. #### Maven Dependencies
-     **pom.xml**  
+    Need to add below dependency to enable kafka in **pom.xml**.  
     ```
     <dependency>
         <groupId>org.springframework.kafka</groupId>
@@ -67,6 +70,11 @@ If no error on the console means Apache Kafka is started and running now.
     ```
    
 2. #### Properties file
+     Reading some properties from **application.yml** file, like bootstrap servers, group id and topics.  
+     Here we have two topics to publish and consume data.
+     > message-topic (for string data)  
+       superhero-topic (for SuperHero objects)
+
      **src/main/resources/application.yml**
      ```
      spring:
@@ -74,14 +82,17 @@ If no error on the console means Apache Kafka is started and running now.
          consumer:
            bootstrap-servers: localhost:9092
            group-id: group_id
+   
          producer:
            bootstrap-servers: localhost:9092
+   
          topic: message-topic
          superhero-topic: superhero-topic  
      ```
    
 3. #### Model class
-     **com.arya.kafka.model.SuperHero.java**  
+    This is the model class which we will publish kafka topic using `KafkaTemplate` and consume it using `@KafkaListner` from the same topic.  
+    **com.arya.kafka.model.SuperHero.java**  
     ```
     public class SuperHero implements Serializable {
     
