@@ -18,6 +18,8 @@ the original implementation of this project, kept for reference.
 | Spring Kafka | ~2.5.x (managed) | 3.x |
 | Dependencies | Web, Kafka only | Web, Kafka, Actuator, Validation, Lombok, MapStruct, Prometheus, OpenAPI |
 
+---
+
 The current `master` branch is a full enterprise rewrite targeting **Java 21**,
 **Spring Boot 3.4.5**, and **Spring Kafka 3.x** with additional features such as
 dead-letter queues, retry policies, Prometheus metrics, OpenAPI docs, and Docker support.
