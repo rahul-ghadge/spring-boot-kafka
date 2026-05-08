@@ -1,19 +1,126 @@
-server:
-  port: 8080  # Tomcat default port
-
-
 spring:
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: group_id
-#      auto-offset-reset: earliest
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  application:
+    name: spring-boot-kafka
 
-    topic: message-topic
-    superhero-topic: superhero-topic
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    # ─── Producer Configuration ────────────────────────────────────────────────
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all                        # Strongest durability guarantee
+      retries: 3
+      properties:
+        enable.idempotence: true       # Exactly-once producer semantics
+        max.in.flight.requests.per.connection: 1
+        delivery.timeout.ms: 120000
+        linger.ms: 5
+        batch.size: 16384
+
+    # ─── Consumer Configuration ────────────────────────────────────────────────
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      group-id: ${KAFKA_GROUP_ID:kafka-enterprise-group}
+      auto-offset-reset: earliest
+      enable-auto-commit: false        # Manual offset commit for reliability
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      max-poll-records: 10
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "com.arya.kafka.model,com.arya.kafka.dto"
+        spring.json.use.type.headers: false
+        isolation.level: read_committed # Only read committed records
+
+    listener:
+      ack-mode: MANUAL_IMMEDIATE       # Ack only after successful processing
+      concurrency: 3                   # Parallel consumer threads per topic
+
+    # ─── Topic Names ───────────────────────────────────────────────────────────
+    topics:
+      message: message-topic
+      superhero: superhero-topic
+      notification: notification-topic
+      audit: audit-topic
+      # Dead-Letter Queue (DLQ) topics
+      message-dlt: message-topic.DLT
+      superhero-dlt: superhero-topic.DLT
+
+  # ─── Jackson Configuration ─────────────────────────────────────────────────
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+
+# ─── Application Retry Configuration ────────────────────────────────────────
+kafka:
+  retry:
+    max-attempts: 3
+    initial-interval-ms: 1000
+    multiplier: 2.0
+    max-interval-ms: 10000
+
+# ─── Actuator & Metrics ──────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,kafkahealth
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        kafka.producer.record.send.total: true
+  health:
+    kafka:
+      enabled: true
+
+# ─── OpenAPI / Swagger ───────────────────────────────────────────────────────
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: ASC
+    tags-sorter: alpha
+
+# ─── Logging ─────────────────────────────────────────────────────────────────
+logging:
+  level:
+    root: INFO
+    com.arya.kafka: DEBUG
+    org.apache.kafka: WARN
+    org.springframework.kafka: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{correlationId}] %logger{36} - %msg%n"
+
+---
+# ─── Local Profile ───────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: local
+  kafka:
+    bootstrap-servers: localhost:9092
+
+---
+# ─── Docker Profile ──────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: docker
+  kafka:
+    bootstrap-servers: kafka:9092

@@ -1,0 +1,27 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9095
+    consumer:
+      group-id: test-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+    topics:
+      message: message-topic
+      superhero: superhero-topic
+      notification: notification-topic
+      audit: audit-topic
+      message-dlt: message-topic.DLT
+      superhero-dlt: superhero-topic.DLT
+
+kafka:
+  retry:
+    max-attempts: 1
+    initial-interval-ms: 100
+    multiplier: 1.0
+    max-interval-ms: 100
+
+logging:
+  level:
+    root: WARN
+    com.arya.kafka: DEBUG
+    org.springframework.kafka: WARN

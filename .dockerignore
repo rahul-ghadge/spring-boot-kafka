@@ -1,0 +1,9 @@
+target/
+*.md
+*.zip
+.git/
+.gitignore
+.idea/
+.vscode/
+docker-compose.yml
+monitoring/

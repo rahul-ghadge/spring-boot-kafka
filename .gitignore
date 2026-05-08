@@ -1,40 +1,29 @@
-HELP.md
+# Compiled class files
+*.class
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
 
+# Logs
+*.log
+logs/
 
-
-/mvnw.bat
-/mvnw.cmd
-/mvnw
-/.mvn/
-
-
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
+# IDE files
+.idea/
 *.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-
-### VS Code ###
 .vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Secrets / environment
+.env
+*.env.local
+application-secret.yml
+
+# Docker volumes
+docker-data/

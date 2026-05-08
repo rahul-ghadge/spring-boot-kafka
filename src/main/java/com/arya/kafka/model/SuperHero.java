@@ -1,11 +1,31 @@
 package com.arya.kafka.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 
-
+/**
+ * Domain model representing a SuperHero entity published to and consumed from Kafka topics.
+ *
+ * <p>Implements {@link Serializable} to support safe serialization across Kafka partitions.
+ * Jackson annotations ensure forward compatibility with unknown properties.
+ *
+ * @author rahul-ghadge
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SuperHero implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String name;
@@ -14,62 +34,7 @@ public class SuperHero implements Serializable {
     private int age;
     private boolean canFly;
 
-    public SuperHero() { }
-
-    public SuperHero(String name, String superName, String profession, int age, boolean canFly) {
-        super();
-        this.name = name;
-        this.superName = superName;
-        this.profession = profession;
-        this.age = age;
-        this.canFly = canFly;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSuperName() {
-        return superName;
-    }
-
-    public void setSuperName(String superName) {
-        this.superName = superName;
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public boolean isCanFly() {
-        return canFly;
-    }
-
-    public void setCanFly(boolean canFly) {
-        this.canFly = canFly;
-    }
-
-    @Override
-    public String toString() {
-        return "SuperHero [name=" + name + ", superName=" + superName
-                + ", profession=" + profession + ", age=" + age + ", canFly="
-                + canFly + "]";
-    }
-
+    /** Timestamp set by the producer at publish time. */
+    @Builder.Default
+    private Instant publishedAt = Instant.now();
 }
