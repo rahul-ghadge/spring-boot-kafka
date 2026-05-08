@@ -5,6 +5,28 @@
 [![Spring Kafka](https://img.shields.io/badge/Spring%20Kafka-3.x-brightgreen.svg)](https://spring.io/projects/spring-kafka)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+
+# Legacy Version (old-main branch)
+
+The [`old-main`](https://github.com/rahul-ghadge/spring-boot-kafka/tree/old-main) branch contains
+the original implementation of this project, kept for reference.
+
+| Component | Legacy (`old-main`) | Enterprise (`master`) |
+|---|---|---|
+| Java | 1.8 | 21 |
+| Spring Boot | 2.3.2.RELEASE | 3.4.5 |
+| Spring Kafka | ~2.5.x (managed) | 3.x |
+| Dependencies | Web, Kafka only | Web, Kafka, Actuator, Validation, Lombok, MapStruct, Prometheus, OpenAPI |
+
+The current `master` branch is a full enterprise rewrite targeting **Java 21**,
+**Spring Boot 3.4.5**, and **Spring Kafka 3.x** with additional features such as
+dead-letter queues, retry policies, Prometheus metrics, OpenAPI docs, and Docker support.
+---
+
+---
+
+# New code base with DLQ and exception handling
+
 An enterprise-grade Spring Boot application demonstrating production-ready Apache Kafka integration with multiple producers, multiple consumers, dead-letter queue (DLQ) support, retry policies, Prometheus metrics, and OpenAPI documentation.
 
 ---
