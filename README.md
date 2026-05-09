@@ -256,25 +256,6 @@ If no error on the console means Apache Kafka is started and running now.
 2020-08-12 16:10:35.626  INFO 7376 --- [ntainer#0-0-C-1] com.arya.kafka.service.ConsumerService   : **** -> Consumed Super Hero :: SuperHero [name=Tony, superName=Iron Man, profession=Business, age=50, canFly=true]
 ```
 
-<img width="1461" height="549" alt="image" src="https://github.com/user-attachments/assets/13a06fad-0673-4a3e-885d-aba0d7c3f7f3" />
-<img width="1636" height="226" alt="image" src="https://github.com/user-attachments/assets/0287c932-b6c9-417f-a4a2-8e5bc7678997" />
-
-
----
-
-<img width="1472" height="885" alt="image" src="https://github.com/user-attachments/assets/6ea49f15-3489-48d5-bbe7-421cbf07e187" />
-![Alt text](https://github.com/rahul-ghadge/spring-boot-kafka/blob/master/src/main/resources/Output.PNG?raw=true "Kafka Publisher-Consumer output")
-
----
-
-<img width="1480" height="429" alt="image" src="https://github.com/user-attachments/assets/f5c4d328-fdf4-4732-a17f-f503ac6c5ded" />
-<img width="1588" height="103" alt="image" src="https://github.com/user-attachments/assets/51864b5d-7e76-4938-aa4e-f210c147f9f6" />
-
----
-
-
-
----
 
 <img width="1444" height="695" alt="image" src="https://github.com/user-attachments/assets/904150f0-ac5a-4286-a5af-020ba0b7cebc" />
 
