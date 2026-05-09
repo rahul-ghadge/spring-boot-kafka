@@ -470,14 +470,14 @@ mvn test
 This project is licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
 
 ---
-#
+### 🧪 Publish string message to Kafka - Consumer will automatic the String
 ---
-
+<img width="1442" height="520" alt="image" src="https://github.com/user-attachments/assets/52cdefa2-cb97-4cd5-b921-a14f0efd115b" />
 <img width="1461" height="549" alt="image" src="https://github.com/user-attachments/assets/13a06fad-0673-4a3e-885d-aba0d7c3f7f3" />
 <img width="1572" height="132" alt="image" src="https://github.com/user-attachments/assets/fd7e250b-a505-42b2-a265-eded4da4837f" />
 
 ---
-# 
+### 🧪 Publish Superhero object to Kafka - Consumer will automatic the object
 ---
 
 <img width="1444" height="695" alt="image" src="https://github.com/user-attachments/assets/904150f0-ac5a-4286-a5af-020ba0b7cebc" />
@@ -486,7 +486,7 @@ This project is licensed under the [Apache 2.0 License](https://www.apache.org/l
 
 
 ---
-# 
+### 🧪 Broadcast the notification to all kafka groups
 ---
 
 <img width="1472" height="885" alt="image" src="https://github.com/user-attachments/assets/6ea49f15-3489-48d5-bbe7-421cbf07e187" />
