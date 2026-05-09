@@ -255,7 +255,3 @@ If no error on the console means Apache Kafka is started and running now.
 2020-08-12 16:10:35.615  INFO 7376 --- [nio-8080-exec-5] com.arya.kafka.service.ProducerService   : #### -> Publishing SuperHero :: SuperHero [name=Tony, superName=Iron Man, profession=Business, age=50, canFly=true]
 2020-08-12 16:10:35.626  INFO 7376 --- [ntainer#0-0-C-1] com.arya.kafka.service.ConsumerService   : **** -> Consumed Super Hero :: SuperHero [name=Tony, superName=Iron Man, profession=Business, age=50, canFly=true]
 ```
-
-
-<img width="1444" height="695" alt="image" src="https://github.com/user-attachments/assets/904150f0-ac5a-4286-a5af-020ba0b7cebc" />
-
